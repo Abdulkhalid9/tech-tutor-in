@@ -1,0 +1,60 @@
+/**
+ * Materials Page Styles
+ */
+
+.materials-page {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.materials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1rem;
+}
+
+.material-card {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1.4rem;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  box-shadow: var(--shadow);
+}
+
+.material-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(15, 118, 110, 0.1);
+  color: var(--primary-dark);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.material-card h3 {
+  font-size: 1.15rem;
+}
+
+.material-card p {
+  color: var(--muted);
+}
+
+.material-meta {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.subject {
+  display: inline-flex;
+  padding: 0.36rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(245, 158, 11, 0.16);
+  color: #9a6700;
+  font-weight: 700;
+}
