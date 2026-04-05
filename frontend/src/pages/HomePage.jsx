@@ -26,8 +26,8 @@ const HomePage = () => {
               <span>Question intake</span>
             </div>
             <div>
-              <strong>3 roles</strong>
-              <span>Students, tutors, admins</span>
+              <strong>2 roles</strong>
+              <span>Students and tutors</span>
             </div>
             <div>
               <strong>Secure</strong>
@@ -48,8 +48,8 @@ const HomePage = () => {
               <p>Accept high-value questions and build verified earnings.</p>
             </div>
             <div className="hero-card">
-              <span className="hero-chip">Admin</span>
-              <p>Approve tutors, manage platform quality, and watch stats in one dashboard.</p>
+              <span className="hero-chip">Student</span>
+              <p>Browse materials, post doubts, and keep every solved answer organized for revision.</p>
             </div>
           </div>
         </div>
@@ -73,8 +73,8 @@ const HomePage = () => {
           </div>
           <div className="feature-card">
             <span>03</span>
-            <h3>Pay & Unlock</h3>
-            <p>Students unlock the answer through Razorpay and close the loop with acceptance.</p>
+            <h3>Unlock & Review</h3>
+            <p>Students unlock the answer and close the loop with acceptance after reviewing the solution.</p>
           </div>
         </div>
       </section>
@@ -82,7 +82,7 @@ const HomePage = () => {
       <section className="roles">
         <div className="section-heading">
           <p className="section-kicker">Choose Your Role</p>
-          <h2>Built for students, tutors, and operators</h2>
+          <h2>Built for students and tutors</h2>
         </div>
         <div className="role-grid">
           <div className="role-card">
