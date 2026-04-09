@@ -192,6 +192,56 @@ exports.getAllQuestions = async (req, res, next) => {
 };
 
 /**
+ * @desc    Get all answers (Admin)
+ * @route   GET /api/admin/answers
+ * @access  Private/Admin
+ */
+exports.getAllAnswers = async (req, res, next) => {
+  try {
+    const { status } = req.query;
+    const query = status ? { status } : {};
+
+    const answers = await Answer.find(query)
+      .populate('questionId', 'title')
+      .populate('tutorId', 'name email')
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      status: 'success',
+      count: answers.length,
+      data: answers
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Get all answers (Admin)
+ * @route   GET /api/admin/answers
+ * @access  Private/Admin
+ */
+exports.getAllAnswers = async (req, res, next) => {
+  try {
+    const { status } = req.query;
+    const query = status ? { status } : {};
+
+    const answers = await Answer.find(query)
+      .populate('questionId', 'title')
+      .populate('tutorId', 'name email')
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      status: 'success',
+      count: answers.length,
+      data: answers
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * @desc    Get all payments (Admin)
  * @route   GET /api/admin/payments
  * @access  Private/Admin

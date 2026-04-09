@@ -3,9 +3,9 @@
  * Main layout with navbar and footer
  */
 
-import { Outlet, Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
-import "./Layout.css";
+import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import './Layout.css';
 
 const Layout = () => {
   const { user, logout, isAuthenticated } = useAuth();
@@ -13,14 +13,16 @@ const Layout = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/");
+    navigate('/');
   };
 
   return (
     <div className="layout">
       <nav className="navbar">
         <div className="nav-container">
-          <Link to="/" className="logo">
+
+          {/* Logo — clicking goes to dashboard if logged in, home if not */}
+          <Link to={isAuthenticated ? '/dashboard' : '/'} className="logo">
             <span className="logo-mark">TT</span>
             <span>
               <strong>TechTutorIn</strong>
@@ -29,44 +31,50 @@ const Layout = () => {
           </Link>
 
           <ul className="nav-links">
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            {user?.role === "admin" && (
-              <li>
-                <Link to="/materials">Study Materials</Link>
-              </li>
+
+            {/* Guest navbar — not logged in */}
+            {!isAuthenticated && (
+              <>
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="/login">Login</Link></li>
+                <li><Link to="/register" className="btn-primary">Register</Link></li>
+              </>
             )}
 
-            {isAuthenticated ? (
+            {/* Student navbar */}
+            {isAuthenticated && user?.role === 'student' && (
               <>
-                <li>
-                  <span className="nav-badge">{user?.role}</span>
-                </li>
-                <li>
-                  <Link to="/dashboard">Dashboard</Link>
-                </li>
-                <li>
-                  <Link to="/profile">Profile</Link>
-                </li>
-                <li>
-                  <button onClick={handleLogout} className="btn-link">
-                    Logout
-                  </button>
-                </li>
-              </>
-            ) : (
-              <>
-                <li>
-                  <Link to="/login">Login</Link>
-                </li>
-                <li>
-                  <Link to="/register" className="btn-primary">
-                    Register
-                  </Link>
-                </li>
+                <li><span className="nav-badge">Student</span></li>
+                <li><Link to="/student">Dashboard</Link></li>
+                <li><Link to="/ask-question">Ask Question</Link></li>
+                <li><Link to="/questions">My Questions</Link></li>
+                <li><Link to="/profile">Profile</Link></li>
+                <li><button onClick={handleLogout} className="btn-link">Logout</button></li>
               </>
             )}
+
+            {/* Tutor navbar */}
+            {isAuthenticated && user?.role === 'tutor' && (
+              <>
+                <li><span className="nav-badge">Tutor</span></li>
+                <li><Link to="/tutor">Dashboard</Link></li>
+                <li><Link to="/questions">Questions</Link></li>
+                <li><Link to="/profile">Profile</Link></li>
+                <li><button onClick={handleLogout} className="btn-link">Logout</button></li>
+              </>
+            )}
+
+            {/* Admin navbar */}
+            {isAuthenticated && user?.role === 'admin' && (
+              <>
+                <li><span className="nav-badge">Admin</span></li>
+                <li><Link to="/admin">Dashboard</Link></li>
+                <li><Link to="/materials">Study Materials</Link></li>
+                <li><Link to="/profile">Profile</Link></li>
+                <li><button onClick={handleLogout} className="btn-link">Logout</button></li>
+              </>
+            )}
+
           </ul>
         </div>
       </nav>
@@ -76,10 +84,7 @@ const Layout = () => {
       </main>
 
       <footer className="footer">
-        <p>
-          &copy; 2026 TechTutorIn. Built for serious exam prep and better tutor
-          workflows.
-        </p>
+        <p>&copy; 2026 TechTutorIn. Built for serious exam prep and better tutor workflows.</p>
       </footer>
     </div>
   );

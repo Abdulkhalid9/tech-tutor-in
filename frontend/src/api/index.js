@@ -56,6 +56,7 @@ export const adminApi = {
   getStats: () => api.get('/admin/stats'),
   getUsers: (params) => api.get('/admin/users', { params }),
   getQuestions: (params) => api.get('/admin/questions', { params }),
+  getAnswers: (params) => api.get('/admin/answers', { params }),
   getPayments: () => api.get('/admin/payments'),
   approveTutor: (id, status) => api.put(`/admin/tutors/${id}/approve`, { status }),
   updateUserRole: (id, role) => api.put(`/admin/users/${id}/role`, { role }),

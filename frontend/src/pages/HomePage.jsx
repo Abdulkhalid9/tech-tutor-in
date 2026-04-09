@@ -18,9 +18,9 @@ const HomePage = () => {
           </p>
           <div className="hero-buttons">
             <Link to="/register" className="btn btn-primary">Get Started</Link>
-            <Link to="/materials" className="btn btn-secondary">Browse Materials</Link>
+            {/* <Link to="/materials" className="btn btn-secondary">Browse Materials</Link> */}
           </div>
-          <div className="hero-stats">
+          {/* <div className="hero-stats">
             <div>
               <strong>24/7</strong>
               <span>Question intake</span>
@@ -33,7 +33,7 @@ const HomePage = () => {
               <strong>Secure</strong>
               <span>Payments and gated answers</span>
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="hero-panel">

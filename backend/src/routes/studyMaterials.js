@@ -11,8 +11,8 @@ const {
 const protect = require('../middleware/auth');
 const roleCheck = require('../middleware/roleCheck');
 
-router.use(protect);
-router.use(roleCheck('admin'));
+// router.use(protect);
+// router.use(roleCheck('admin'));
 
 router.get('/', getMaterials);
 router.get('/:id', getMaterial);
