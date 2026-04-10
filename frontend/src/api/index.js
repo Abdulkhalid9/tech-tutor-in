@@ -63,4 +63,10 @@ export const adminApi = {
   deleteUser: (id) => api.delete(`/admin/users/${id}`)
 };
 
+// QA Library API
+export const qaApi = {
+  getAll: (params) => api.get('/qa', { params }),
+  mockUnlock: (questionId) => api.post(`/qa/mock-unlock/${questionId}`),
+};
+
 export { api, authApi, questionApi };

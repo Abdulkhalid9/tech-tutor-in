@@ -2,24 +2,93 @@
  * Question Detail Page Styles
  */
 
-.question-detail {
+.question-workspace {
+  width: 100%;
+  min-height: calc(100vh - 220px);
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.95fr);
-  gap: 1.25rem;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1.2rem;
 }
 
-.question-main,
-.answer-section {
-  padding: 1.6rem;
-  border-radius: 28px;
-  background: rgba(255, 255, 255, 0.84);
-  border: 1px solid rgba(255, 255, 255, 0.82);
-  box-shadow: var(--shadow);
+.workspace-pane {
+  min-height: 0;
+  max-height: calc(100vh - 220px);
+  overflow-y: auto;
+  border-radius: 14px;
+  background: #f8fafc;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
 }
 
-.question-main h1,
-.answer-section h2 {
+.pane-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(248, 250, 252, 0.9);
+}
+
+.sticky-pane-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  backdrop-filter: blur(8px);
+}
+
+.pane-label {
+  margin: 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.pane-header h2 {
+  margin: 0.15rem 0 0;
+  font-size: 1.1rem;
+}
+
+.pane-content {
+  padding: 1.3rem;
+}
+
+.pane-content h1 {
+  margin-top: 0;
   font-family: 'DM Serif Display', Georgia, serif;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.32rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  text-transform: capitalize;
+  font-weight: 700;
+}
+
+.status-pending { background: rgba(245, 158, 11, 0.16); color: #b45309; }
+.status-assigned { background: rgba(59, 130, 246, 0.16); color: #1d4ed8; }
+.status-answered, .status-submitted { background: rgba(14, 165, 233, 0.16); color: #0369a1; }
+.status-accepted, .status-closed { background: rgba(34, 197, 94, 0.16); color: #15803d; }
+.status-rejected { background: rgba(239, 68, 68, 0.16); color: #b91c1c; }
+
+.price {
+  padding: 0.32rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(15, 118, 110, 0.12);
+  color: #0f766e;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+.question-meta-right {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
 .meta {
@@ -63,6 +132,23 @@
   font-weight: 700;
 }
 
+.answer-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.toolbar-btn {
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  background: #fff;
+  color: #334155;
+  border-radius: 8px;
+  padding: 0.38rem 0.55rem;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
 .answer-form {
   display: grid;
   gap: 1rem;
@@ -72,8 +158,8 @@
   width: 100%;
   padding: 1rem;
   border: 1px solid rgba(31, 36, 48, 0.12);
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.85);
+  border-radius: 14px;
+  background: #fff;
 }
 
 .answer-form textarea:focus {
@@ -84,7 +170,7 @@
 
 .answer-locked-card {
   padding: 1.2rem;
-  border-radius: 22px;
+  border-radius: 14px;
   background: linear-gradient(135deg, rgba(15, 118, 110, 0.08), rgba(245, 158, 11, 0.08));
   border: 1px solid rgba(15, 118, 110, 0.12);
 }
@@ -93,8 +179,12 @@
   margin-top: 1rem;
 }
 
-@media (max-width: 900px) {
-  .question-detail {
+@media (max-width: 960px) {
+  .question-workspace {
     grid-template-columns: 1fr;
+  }
+
+  .workspace-pane {
+    max-height: min(70vh, 660px);
   }
 }

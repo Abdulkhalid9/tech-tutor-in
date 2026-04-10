@@ -47,7 +47,7 @@ const Layout = () => {
                 <li><span className="nav-badge">Student</span></li>
                 <li><Link to="/student">Dashboard</Link></li>
                 <li><Link to="/ask-question">Ask Question</Link></li>
-                <li><Link to="/questions">My Questions</Link></li>
+                <li><Link to="/questions">Browse Library</Link></li>
                 <li><Link to="/profile">Profile</Link></li>
                 <li><button onClick={handleLogout} className="btn-link">Logout</button></li>
               </>

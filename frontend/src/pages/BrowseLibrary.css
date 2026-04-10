@@ -1,0 +1,407 @@
+/**
+ * Browse Library — Styles
+ */
+
+/* ── Page Layout ─────────────────────────────────────────── */
+.library-page {
+  display: grid;
+  gap: 1.5rem;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+.library-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  padding: 1.7rem 1.8rem;
+  background: linear-gradient(135deg, rgba(255,255,255,0.94), rgba(246,241,231,0.9));
+  border: 1px solid rgba(255,255,255,0.82);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  flex-wrap: wrap;
+}
+
+.library-header-text h1 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.library-header-text p {
+  margin-top: 0.4rem;
+  color: var(--muted);
+  font-size: 0.97rem;
+}
+
+.library-count {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ── Controls Bar ────────────────────────────────────────── */
+.library-controls {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Search */
+.library-search-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 240px;
+}
+
+.library-search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+  font-size: 1rem;
+}
+
+.library-search {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  border: 1.5px solid rgba(31, 36, 48, 0.12);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.9);
+  color: var(--ink);
+  font-size: 0.95rem;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  outline: none;
+}
+
+.library-search:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(15,118,110,0.12);
+}
+
+.library-search::placeholder {
+  color: var(--muted);
+}
+
+/* Subject filter tabs */
+.library-filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba(31,36,48,0.12);
+  background: rgba(255,255,255,0.8);
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+
+.filter-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary-dark);
+  background: rgba(15,118,110,0.06);
+}
+
+.filter-btn.active {
+  background: linear-gradient(135deg, var(--primary), #14b8a6);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 6px 16px rgba(15,118,110,0.25);
+}
+
+/* ── Card Grid ───────────────────────────────────────────── */
+.library-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.25rem;
+}
+
+/* ── Q&A Card ────────────────────────────────────────────── */
+.qa-card {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(31,36,48,0.08);
+  border-radius: 24px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.qa-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(31,36,48,0.1);
+}
+
+.qa-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.1rem 1.25rem 0;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.subject-badge {
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Subject badge colors */
+.badge-physics    { background: rgba(14,116,144,0.12);  color: #0a5c80; }
+.badge-chemistry  { background: rgba(124,58,237,0.12);  color: #5b21b6; }
+.badge-maths,
+.badge-mathematics{ background: rgba(21,128,61,0.12);   color: #166534; }
+.badge-biology    { background: rgba(234,88,12,0.12);   color: #9a3412; }
+.badge-general,
+.badge-default    { background: rgba(31,36,48,0.08);    color: #444c5e; }
+
+.qa-price {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.qa-unlocked-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(21,128,61,0.12);
+  color: #166534;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.qa-card-body {
+  padding: 1rem 1.25rem;
+  flex: 1;
+}
+
+.qa-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--ink);
+  margin-bottom: 0.55rem;
+}
+
+.qa-card-desc {
+  font-size: 0.91rem;
+  color: var(--muted);
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Answer Panel ────────────────────────────────────────── */
+.answer-panel {
+  margin: 0 1.25rem 1.25rem;
+  border-radius: 16px;
+  border: 1.5px solid rgba(31,36,48,0.08);
+  overflow: hidden;
+  background: rgba(247,245,239,0.7);
+}
+
+.answer-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid rgba(31,36,48,0.07);
+  background: rgba(15,118,110,0.06);
+}
+
+.answer-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Locked state */
+.answer-locked {
+  position: relative;
+  padding: 1rem;
+  min-height: 90px;
+}
+
+.answer-blur-text {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  filter: blur(5px);
+  user-select: none;
+  pointer-events: none;
+}
+
+.answer-lock-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  background: rgba(247,245,239,0.6);
+  backdrop-filter: blur(1px);
+}
+
+.lock-icon {
+  font-size: 1.5rem;
+}
+
+.btn-unlock {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1.3rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, var(--accent), #f97316);
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: 0 8px 20px rgba(234,88,12,0.28);
+}
+
+.btn-unlock:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(234,88,12,0.35);
+}
+
+.btn-unlock:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Unlocked state */
+.answer-unlocked {
+  padding: 1rem;
+}
+
+.solution-text {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--ink);
+  white-space: pre-wrap;
+}
+
+.solution-image {
+  margin-top: 0.75rem;
+  border-radius: 10px;
+  max-height: 240px;
+  width: auto;
+  border: 1px solid rgba(31,36,48,0.1);
+}
+
+/* ── Card Footer ─────────────────────────────────────────── */
+.qa-card-footer {
+  padding: 0.75rem 1.25rem 1rem;
+  border-top: 1px solid rgba(31,36,48,0.06);
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+/* ── Empty / Loading States ──────────────────────────────── */
+.library-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 4rem 2rem;
+  color: var(--muted);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+.library-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(15,118,110,0.15);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.library-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: var(--muted);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255,255,255,0.8);
+  box-shadow: var(--shadow);
+}
+
+.library-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.library-empty h3 {
+  color: var(--ink);
+  font-size: 1.1rem;
+}
+
+/* ── Unlock Success Toast ────────────────────────────────── */
+.unlock-success-panel {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .library-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .library-controls {
+    flex-direction: column;
+  }
+
+  .library-search-wrapper {
+    width: 100%;
+  }
+
+  .library-grid {
+    grid-template-columns: 1fr;
+  }
+}

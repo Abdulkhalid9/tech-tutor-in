@@ -58,9 +58,19 @@ app.use((req, res) => {
 
 // Global error handler
 app.use((err, req, res, next) => {
-  console.error('Error:', err.stack);
-  res.status(500).json({
-    message: 'Internal Server Error',
+  // console.error('Error:', err.stack);
+  // res.status(500).json({
+  //   message: 'Internal Server Error',
+  const statusCode = err.statusCode || 500;
+  const message = err.message || 'Internal Server Error';
+
+  if (statusCode >= 500) {
+    console.error('Error:', err.stack);
+  }
+
+  res.status(statusCode).json({
+    status: err.status || (String(statusCode).startsWith('4') ? 'fail' : 'error'),
+    message,
     error: process.env.NODE_ENV === 'development' ? err.message : undefined
   });
 });

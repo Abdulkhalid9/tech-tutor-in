@@ -60,7 +60,7 @@ const StudentDashboard = () => {
       </div>
 
       <div className="questions-list">
-        <h2>My Questions</h2>
+        <h2>Browse Library</h2>
         {loading ? (
           <p>Loading...</p>
         ) : questions.length === 0 ? (

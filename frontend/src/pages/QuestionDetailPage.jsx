@@ -152,102 +152,123 @@ const QuestionDetailPage = () => {
   const showUnlockPrompt = isOwner && !question.answerUnlocked && (answerLocked || question.status === 'answered' || question.status === 'closed');
 
   return (
-    <div className="question-detail">
-      <div className="question-main">
-        <div className="question-header">
-          <span className={`status status-${question.status}`}>{question.status}</span>
-          <span className="price">₹{question.price}</span>
-        </div>
-
-        <h1>{question.title}</h1>
-
-        <div className="meta">
-          <span>By {question.studentId?.name}</span>
-          <span>{new Date(question.createdAt).toLocaleDateString()}</span>
-          {question.subject && <span>{question.subject}</span>}
-        </div>
-
-        <div className="description">
-          <h3>Description</h3>
-          <p>{question.description}</p>
-        </div>
-
-        {question.file && (
-          <div className="file-section">
-            <h3>Attached File</h3>
-            <a href={question.file} target="_blank" rel="noopener noreferrer" className="answer-link">
-              View Attachment
-            </a>
+    <div className="question-workspace" role="region" aria-label="Q-Page and A-Page workspace">
+      <section className="workspace-pane" aria-labelledby="q-page-title">
+        <header className="pane-header sticky-pane-header">
+          <div>
+            <p className="pane-label">Q-Page</p>
+            <h2 id="q-page-title">Student Question</h2>
           </div>
-        )}
-      </div>
-
-      <div className="answer-section">
-        <h2>Answer</h2>
-
-        {!answer ? (
-          <>
-            {isAssignedTutor && question.status === 'assigned' && (
-              <form onSubmit={handleSubmitAnswer} className="answer-form">
-                <textarea
-                  value={solution}
-                  onChange={(event) => setSolution(event.target.value)}
-                  placeholder="Write your solution here..."
-                  rows="8"
-                  required
-                />
-                <button type="submit" className="btn btn-primary" disabled={submitting}>
-                  {submitting ? 'Submitting...' : 'Submit Answer'}
-                </button>
-              </form>
-            )}
-
-            {showUnlockPrompt ? (
-              <div className="answer-locked-card">
-                <h3>Answer ready for unlock</h3>
-                <p>
-                  Your tutor has submitted the solution. Complete payment to unlock the full answer and review it.
-                </p>
-                <button onClick={handlePayment} className="btn btn-primary" disabled={paying}>
-                  {paying ? 'Opening checkout...' : `Pay ₹${question.price} to Unlock`}
-                </button>
-              </div>
-            ) : !isAssignedTutor ? (
-              <p className="no-answer">No answer submitted yet.</p>
-            ) : null}
-          </>
-        ) : (
-          <div className="answer-content">
-            {canViewAnswer ? (
-              <>
-                <p>{answer.solution}</p>
-
-                {answer.file && (
-                  <a href={answer.file} target="_blank" rel="noopener noreferrer" className="answer-link">
-                    View Answer File
-                  </a>
-                )}
-              </>
-            ) : (
-              <div className="answer-locked-card">
-                <h3>Answer locked</h3>
-                <p>Pay to reveal the tutor's complete written solution and any uploaded answer files.</p>
-                <button onClick={handlePayment} className="btn btn-primary" disabled={paying}>
-                  {paying ? 'Opening checkout...' : `Pay ₹${question.price} to Unlock`}
-                </button>
-              </div>
-            )}
-
-            {canViewAnswer && answer.status === 'submitted' && isOwner && (
-              <div className="answer-actions">
-                <button onClick={handleAccept} className="btn btn-success">
-                  Accept Answer
-                </button>
-              </div>
-            )}
+          <div className="question-meta-right">
+            <span className={`status status-${question.status}`}>{question.status}</span>
+            <span className="price">₹{question.price}</span>
           </div>
-        )}
-      </div>
+        </header>
+
+        <div className="pane-content">
+          <h1>{question.title}</h1>
+
+          <div className="meta">
+            <span>By {question.studentId?.name}</span>
+            <span>{new Date(question.createdAt).toLocaleDateString()}</span>
+            {question.subject && <span>{question.subject}</span>}
+          </div>
+
+          <div className="description">
+            <h3>Question Description</h3>
+            <p>{question.description}</p>
+          </div>
+
+          {question.file && (
+            <div className="file-section">
+              <h3>Student Attachment</h3>
+              <a href={question.file} target="_blank" rel="noopener noreferrer" className="answer-link">
+                View File (Image / PDF)
+              </a>
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section className="workspace-pane" aria-labelledby="a-page-title">
+        <header className="pane-header sticky-pane-header">
+          <div>
+            <p className="pane-label">A-Page</p>
+            <h2 id="a-page-title">Tutor Answer</h2>
+          </div>
+
+          <div className="answer-toolbar" role="toolbar" aria-label="A-Page toolbar">
+            <button type="button" className="toolbar-btn" title="Bold">B</button>
+            <button type="button" className="toolbar-btn" title="Upload">Upload</button>
+            <button type="button" className="toolbar-btn" title="Code Block">{`</>`}</button>
+          </div>
+        </header>
+
+        <div className="pane-content">
+          {!answer ? (
+            <>
+              {isAssignedTutor && question.status === 'assigned' && (
+                <form onSubmit={handleSubmitAnswer} className="answer-form">
+                  <textarea
+                    value={solution}
+                    onChange={(event) => setSolution(event.target.value)}
+                    placeholder="Write the solution, add steps, code snippets, or diagram notes..."
+                    rows="10"
+                    required
+                  />
+                  <button type="submit" className="btn btn-primary" disabled={submitting}>
+                    {submitting ? 'Submitting...' : 'Submit Answer'}
+                  </button>
+                </form>
+              )}
+
+              {showUnlockPrompt ? (
+                <div className="answer-locked-card">
+                  <h3>Answer ready for unlock</h3>
+                  <p>
+                    Your tutor has submitted the solution. Complete payment to unlock the full answer and review it.
+                  </p>
+                  <button onClick={handlePayment} className="btn btn-primary" disabled={paying}>
+                    {paying ? 'Opening checkout...' : `Pay ₹${question.price} to Unlock`}
+                  </button>
+                </div>
+              ) : !isAssignedTutor ? (
+                <p className="no-answer">No answer submitted yet.</p>
+              ) : null}
+            </>
+          ) : (
+            <div className="answer-content">
+              {canViewAnswer ? (
+                <>
+                  <p>{answer.solution}</p>
+
+                  {answer.file && (
+                    <a href={answer.file} target="_blank" rel="noopener noreferrer" className="answer-link">
+                      View Answer File
+                    </a>
+                  )}
+                </>
+              ) : (
+                <div className="answer-locked-card">
+                  <h3>Answer locked</h3>
+                  <p>Pay to reveal the tutor&apos;s complete written solution and any uploaded answer files.</p>
+                  <button onClick={handlePayment} className="btn btn-primary" disabled={paying}>
+                    {paying ? 'Opening checkout...' : `Pay ₹${question.price} to Unlock`}
+                  </button>
+                </div>
+              )}
+
+              {canViewAnswer && answer.status === 'submitted' && isOwner && (
+                <div className="answer-actions">
+                  <button onClick={handleAccept} className="btn btn-success">
+                    Accept Answer
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </section>
     </div>
   );
 };

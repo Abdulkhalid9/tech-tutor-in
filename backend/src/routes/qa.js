@@ -16,41 +16,75 @@ const protect = require('../middleware/auth');
 // ─────────────────────────────────────────────────────────────
 router.get('/', protect, async (req, res) => {
   try {
-    // Only show questions that have been answered
-    const questions = await Question.find({ status: 'answered' })
-      .sort({ createdAt: -1 })
-      .select('title description subject price answerUnlocked file fileType');
+    const { search, subject } = req.query;
 
-    // Fetch corresponding answers
+    // Build filter: only answered questions
+    const filter = { status: 'answered' };
+    if (subject && subject !== 'All') {
+      filter.subject = { $regex: subject, $options: 'i' };
+    }
+    if (search && search.trim()) {
+      filter.$or = [
+        { title:       { $regex: search.trim(), $options: 'i' } },
+        { description: { $regex: search.trim(), $options: 'i' } },
+      ];
+    }
+
+    const questions = await Question.find(filter)
+      .sort({ createdAt: -1 })
+      .select('title description subject price answerUnlocked file fileType createdAt');
+
     const questionIds = questions.map((q) => q._id);
     const answers = await Answer.find({ questionId: { $in: questionIds } })
       .select('questionId solution file fileType');
 
-    // Map answers by questionId for quick lookup
     const answerMap = {};
     answers.forEach((a) => {
       answerMap[a.questionId.toString()] = a;
     });
 
-    // Merge question + answer into one object
     const data = questions.map((q) => {
       const answer = answerMap[q._id.toString()];
       return {
-        _id: q._id,
-        title: q.title,
-        description: q.description,
-        subject: q.subject,
-        price: q.price,
-        answerUnlocked: q.answerUnlocked,
-        questionFile: q.file,
-        questionFileType: q.fileType,
-        solution: answer?.solution || null,
-        answerFile: answer?.file || null,
-        answerFileType: answer?.fileType || null,
+        _id:             q._id,
+        title:           q.title,
+        description:     q.description,
+        subject:         q.subject,
+        price:           q.price,
+        answerUnlocked:  q.answerUnlocked,
+        questionFile:    q.file,
+        questionFileType:q.fileType,
+        solution:        answer?.solution || null,
+        answerFile:      answer?.file || null,
+        answerFileType:  answer?.fileType || null,
+        createdAt:       q.createdAt,
       };
     });
 
-    res.status(200).json({ success: true, data });
+    res.status(200).json({ success: true, count: data.length, data });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+
+// ── POST /api/qa/mock-unlock/:questionId ─────────────────────
+// DEV / MOCK: Unlocks an answer without payment verification.
+// Replace this with the real /unlock route once Razorpay is configured.
+// ─────────────────────────────────────────────────────────────
+router.post('/mock-unlock/:questionId', protect, async (req, res) => {
+  try {
+    const question = await Question.findByIdAndUpdate(
+      req.params.questionId,
+      { answerUnlocked: true },
+      { new: true }
+    );
+
+    if (!question) {
+      return res.status(404).json({ success: false, message: 'Question not found' });
+    }
+
+    res.status(200).json({ success: true, message: 'Answer unlocked (mock)', data: question });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
