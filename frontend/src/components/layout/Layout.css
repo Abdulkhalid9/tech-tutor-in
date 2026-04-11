@@ -112,6 +112,17 @@
   padding: 2rem 0 3rem;
 }
 
+/* Full-bleed override — used by document/viewer pages */
+.main-content:has(.library-root) {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 .footer {
   padding: 1.5rem 1.25rem 2.5rem;
   text-align: center;

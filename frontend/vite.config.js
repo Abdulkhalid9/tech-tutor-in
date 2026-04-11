@@ -10,10 +10,16 @@ export default defineConfig({
         target: 'http://localhost:5000',
         changeOrigin: true,
       },
+      // Proxy /uploads so react-pdf can fetch PDFs without CORS issues
+      '/uploads': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+      },
     },
   },
   optimizeDeps: {
-    include: ['prop-types', 'katex'],
+    include: ['prop-types'],
+    exclude: ['pdfjs-dist'],
   },
   build: {
     commonjsOptions: {
