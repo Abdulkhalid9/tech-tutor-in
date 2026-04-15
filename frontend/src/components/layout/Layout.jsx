@@ -3,6 +3,7 @@
  * Main layout with navbar and footer
  */
 
+import { useState, useEffect } from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './Layout.css';
@@ -16,9 +17,39 @@ const Layout = () => {
     navigate('/');
   };
 
+  const [navVisible, setNavVisible] = useState(true);
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+
+    const handleWindowScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        setNavVisible(false); // scrolling down
+      } else if (currentScrollY < lastScrollY) {
+        setNavVisible(true); // scrolling up
+      }
+      lastScrollY = currentScrollY;
+    };
+
+    const handleCustomVisibility = (e) => {
+      if (e.detail && typeof e.detail.visible === 'boolean') {
+        setNavVisible(e.detail.visible);
+      }
+    };
+
+    window.addEventListener('scroll', handleWindowScroll, { passive: true });
+    window.addEventListener('navbar-visibility', handleCustomVisibility);
+
+    return () => {
+      window.removeEventListener('scroll', handleWindowScroll);
+      window.removeEventListener('navbar-visibility', handleCustomVisibility);
+    };
+  }, []);
+
   return (
     <div className="layout">
-      <nav className="navbar">
+      <nav className={`navbar ${navVisible ? '' : 'navbar-hidden'}`}>
         <div className="nav-container">
 
           {/* Logo — clicking goes to dashboard if logged in, home if not */}

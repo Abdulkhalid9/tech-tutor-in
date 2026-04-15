@@ -66,6 +66,9 @@ questionSchema.index({ status: 1, createdAt: -1 });
 questionSchema.index({ studentId: 1, createdAt: -1 });
 questionSchema.index({ assignedTutor: 1 });
 
+// Text index for search functionality
+questionSchema.index({ title: 'text', description: 'text', subject: 'text' });
+
 const Question = mongoose.model('Question', questionSchema);
 
 module.exports = Question;

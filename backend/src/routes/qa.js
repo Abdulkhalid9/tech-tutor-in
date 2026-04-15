@@ -16,6 +16,10 @@ const protect = require('../middleware/auth');
 // ─────────────────────────────────────────────────────────────
 router.get('/', protect, async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const skip = (page - 1) * limit;
+    
     const { search, subject } = req.query;
 
     // Build filter: only answered questions
@@ -23,16 +27,32 @@ router.get('/', protect, async (req, res) => {
     if (subject && subject !== 'All') {
       filter.subject = { $regex: subject, $options: 'i' };
     }
+    
+    let sortOptions = { createdAt: -1 };
+
     if (search && search.trim()) {
-      filter.$or = [
-        { title:       { $regex: search.trim(), $options: 'i' } },
-        { description: { $regex: search.trim(), $options: 'i' } },
-      ];
+      // Use text index for fast search across title, description, subject
+      filter.$text = { $search: search.trim() };
+      sortOptions = { score: { $meta: 'textScore' } };
     }
 
-    const questions = await Question.find(filter)
-      .sort({ createdAt: -1 })
-      .select('title description subject price answerUnlocked file fileType createdAt');
+    const totalCount = await Question.countDocuments(filter);
+
+    let query = Question.find(filter);
+    
+    if (search && search.trim()) {
+      query = query.select({
+        title: 1, description: 1, subject: 1, price: 1, answerUnlocked: 1, 
+        file: 1, fileType: 1, createdAt: 1, score: { $meta: 'textScore' }
+      });
+    } else {
+      query = query.select('title description subject price answerUnlocked file fileType createdAt');
+    }
+
+    const questions = await query
+      .sort(sortOptions)
+      .skip(skip)
+      .limit(limit);
 
     const questionIds = questions.map((q) => q._id);
     const answers = await Answer.find({ questionId: { $in: questionIds } })
@@ -61,7 +81,15 @@ router.get('/', protect, async (req, res) => {
       };
     });
 
-    res.status(200).json({ success: true, count: data.length, data });
+    res.status(200).json({ 
+      success: true, 
+      count: data.length, 
+      total: totalCount,
+      page,
+      totalPages: Math.ceil(totalCount / limit),
+      hasMore: skip + data.length < totalCount,
+      data 
+    });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

@@ -4,7 +4,7 @@
  * PDF attachments rendered inline via react-pdf.
  */
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
@@ -83,6 +83,7 @@ const PdfViewer = ({ url }) => {
             className="pdf-page-canvas"
             renderTextLayer={true}
             renderAnnotationLayer={true}
+            width={750}
           />
         </div>
       </Document>
@@ -314,6 +315,19 @@ const BrowseLibraryPage = () => {
   const [search, setSearch]         = useState('');
   const [activeSubject, setSubject] = useState('All');
   const [selectedId, setSelectedId] = useState(null);
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  
+  const lastScrollRef = useRef(0);
+
+  const handleDocScroll = useCallback((e) => {
+    const currentScrollY = e.target.scrollTop;
+    if (currentScrollY > lastScrollRef.current && currentScrollY > 50) {
+      window.dispatchEvent(new CustomEvent('navbar-visibility', { detail: { visible: false } }));
+    } else if (currentScrollY < lastScrollRef.current) {
+      window.dispatchEvent(new CustomEvent('navbar-visibility', { detail: { visible: true } }));
+    }
+    lastScrollRef.current = currentScrollY;
+  }, []);
 
   const loadLibrary = useCallback(async () => {
     setLoading(true);
@@ -424,10 +438,19 @@ const BrowseLibraryPage = () => {
       ) : (
         <div className="library-workspace">
           {/* Sidebar */}
-          <aside className="library-sidebar" aria-label="Question list">
-            <div className="sidebar-header">
-              {filtered.length} Question{filtered.length !== 1 ? 's' : ''}
-            </div>
+          {isSidebarOpen && (
+            <aside className="library-sidebar" aria-label="Question list">
+              <div className="sidebar-header">
+                <span>{filtered.length} Question{filtered.length !== 1 ? 's' : ''}</span>
+                <button 
+                  onClick={() => setSidebarOpen(false)}
+                  className="sidebar-toggle-btn"
+                  aria-label="Hide Sidebar"
+                  title="Hide sidebar"
+                >
+                  ◀
+                </button>
+              </div>
             <div className="sidebar-list">
               {filtered.length === 0 ? (
                 <div className="sidebar-empty">
@@ -450,6 +473,7 @@ const BrowseLibraryPage = () => {
               )}
             </div>
           </aside>
+          )}
 
           {/* Document Viewer */}
           <main className="library-viewer" aria-label="Document viewer">
@@ -465,6 +489,16 @@ const BrowseLibraryPage = () => {
                 <div className="doc-toolbar">
                   <div className="doc-toolbar-left">
                     <div className="doc-toolbar-subject">
+                      {!isSidebarOpen && (
+                        <button 
+                          onClick={() => setSidebarOpen(true)}
+                          className="sidebar-toggle-btn"
+                          aria-label="Show Sidebar"
+                          title="Show sidebar"
+                        >
+                          ▶
+                        </button>
+                      )}
                       <span className={`subject-badge ${getBadgeClass(selectedItem.subject)}`}>
                         {selectedItem.subject || 'General'}
                       </span>
@@ -482,7 +516,11 @@ const BrowseLibraryPage = () => {
                 </div>
 
                 {/* Pages scroll area */}
-                <div className="doc-pages-scroll" style={{ overflowY: 'auto', flex: 1, minHeight: 0 }}>
+                <div 
+                  className="doc-pages-scroll" 
+                  style={{ overflowY: 'auto', flex: 1, minHeight: 0 }}
+                  onScroll={handleDocScroll}
+                >
                   {/* Q-Page */}
                   <QuestionPage item={selectedItem} />
 

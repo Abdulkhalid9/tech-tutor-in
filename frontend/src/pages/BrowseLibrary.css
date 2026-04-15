@@ -3,11 +3,10 @@
  * Two-panel layout: sidebar list + PDF/document viewer pane
  */
 
-/* ── Root Layout ─────────────────────────────────────────── */
 .library-root {
   display: flex;
   flex-direction: column;
-  height: calc(100dvh - 76px); /* 76px = navbar height + border */
+  height: 100%;
   gap: 0;
   overflow: hidden;
 }
@@ -148,7 +147,7 @@
 
 /* ── Sidebar ─────────────────────────────────────────────── */
 .library-sidebar {
-  width: 340px;
+  width: 280px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -158,6 +157,9 @@
 }
 
 .sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 0.85rem 1.1rem;
   border-bottom: 1px solid rgba(31, 36, 48, 0.07);
   font-size: 0.78rem;
@@ -358,6 +360,27 @@
   gap: 0.6rem;
 }
 
+.sidebar-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(31, 36, 48, 0.05);
+  border: 1px solid rgba(31, 36, 48, 0.1);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 0.75rem;
+}
+
+.sidebar-toggle-btn:hover {
+  background: rgba(31, 36, 48, 0.1);
+  color: var(--ink);
+  transform: scale(1.05);
+}
+
 .doc-title {
   font-size: 0.98rem;
   font-weight: 700;
@@ -402,13 +425,11 @@
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 2rem 2.5rem;
+  padding: 1.5rem;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 2rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .doc-pages-scroll::-webkit-scrollbar {
@@ -422,9 +443,9 @@
 
 /* ── Paper Sheet (page) ──────────────────────────────────── */
 .doc-page {
-  flex: 1 1 500px;
+  flex: none;
   width: 100%;
-  max-width: 760px;
+  max-width: 1000px;
   background: #fff;
   border-radius: 4px;
   box-shadow:
@@ -517,7 +538,7 @@
 
 /* ── Page body ───────────────────────────────────────────── */
 .doc-page-body {
-  padding: 1.5rem 2rem 2rem;
+  padding: 1rem 2rem 1.5rem;
 }
 
 .doc-page-body h3 {
@@ -620,7 +641,7 @@
   display: block;
   margin: 0 2rem 2rem;
   border-radius: 10px;
-  max-width: calc(100% - 4rem);
+  max-width: 100%;
   border: 1px solid rgba(31, 36, 48, 0.1);
 }
 
